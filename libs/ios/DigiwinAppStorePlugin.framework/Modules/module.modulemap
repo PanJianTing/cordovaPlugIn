@@ -1,0 +1,6 @@
+framework module DigiwinAppStorePlugin {
+  umbrella header "DigiwinAppStorePlugin.h"
+
+  export *
+  module * { export * }
+}

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<plugin xmlns="http://phonegap.com/ns/plugins/1.0" id="digiwin-appstore" version="1.0.0">
+<!--    <engines>-->
+<!--        <engine name="cordova" version=">=3.3.0" />-->
+<!--    </engines>-->
+
+    <name>AppStore</name>
+    <description>Digiwin AppStore</description>
+    <license>Apache 2.0</license>
+    
+    <!-- js-module -->
+    <js-module src="www/appstorePlugin.js" name="deviceModel">
+        <clobbers target="DigiwinAppStore" />
+    </js-module>
+    
+    <!-- android -->
+    <platform name="android">
+        <config-file target="AndroidManifest.xml" parent="/manifest/application">
+            <activity android:exported="true" android:name="com.digiwin.AppStore.Cordova.AppStorePluginActivity" android:launchMode="singleTop">
+                <intent-filter>
+                    <action android:name="APPSTORE_PLUGIN_ACTIVITY" />
+                    <category android:name="android.intent.category.DEFAULT" />
+                </intent-filter>
+            </activity>
+            <service android:name="com.digiwin.AppStore.Cordova.NotificationReceiveMessageService">
+                <intent-filter>
+                    <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+                </intent-filter>
+            </service>
+            <service android:name="com.digiwin.AppStore.Cordova.NotificationInstanceIDService">
+                <intent-filter>
+                    <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+                </intent-filter>
+            </service>
+        </config-file>
+
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="AppStore">
+                <param name="android-package" value="com.digiwin.AppStore.Cordova.AppStorePlugin"/>
+                <param name="onload" value="true" />
+            </feature>
+        </config-file>
+
+        <!-- framework -->
+        <framework src="com.google.firebase:firebase-core:+" />
+        <framework src="com.google.firebase:firebase-messaging:+" />
+
+        <framework src="src/android/AppStorePlugin.gradle" custom="true" type="gradleReference"/>
+
+        <!-- source -->
+        <source-file src="src/android/AppStorePlugin.java" target-dir="src/com/digiwin/AppStore/Cordova"/>
+        <source-file src="src/android/NotificationInstanceIDService.java" target-dir="src/com/digiwin/AppStore/Cordova"/>
+        <source-file src="src/android/NotificationReceiveMessageService.java" target-dir="src/com/digiwin/AppStore/Cordova"/>
+        <source-file src="src/android/AppStorePluginActivity.java" target-dir="src/com/digiwin/AppStore/Cordova"/>
+
+        <!-- library -->
+        <source-file src="libs/android/com.digiwin.AppStore.Device.jar" target-dir="libs"/>
+    </platform>
+    
+    
+    <!-- ios -->
+    <platform name="ios">
+        <header-file src="src/ios/AppStorePlugin.h" />
+        <source-file src="src/ios/AppStorePlugin.m" />
+        <header-file src="src/ios/AppDelegate+Notification.h" />
+        <source-file src="src/ios/AppDelegate+Notification.m" />
+
+        <config-file target="config.xml" parent="/widget">
+            <feature name="AppStore">
+                <param name="ios-package" value="AppStorePlugin" />
+            </feature>
+        </config-file>
+        
+        <!-- ENABLE PUSH CAPABILITY -->
+        <config-file parent="aps-environment" target="*/Entitlements-Debug.plist">
+            <string>development</string>
+        </config-file>
+        <config-file parent="aps-environment" target="*/Entitlements-Release.plist">
+            <string>production</string>
+        </config-file>
+        
+        <framework  src="libs/ios/DigiwinAppStorePlugin.framework" embed="true" custom="true"/>
+    </platform>
+</plugin>

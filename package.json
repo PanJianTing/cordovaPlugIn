@@ -1,0 +1,17 @@
+{
+    "name": "digiwin-appstore",
+    "version": "1.0.0",
+    "description": "Digiwin AppStore Plugin",
+    "cordova": {
+        "id": "digiwin-appstore",
+        "platforms": [
+                      "android",
+                      "ios"
+                      ]
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://dw-appscm.digiwin.biz/panjianting/digiwin-appstore.git"
+    },
+    "license": "Apache-2.0"
+}
